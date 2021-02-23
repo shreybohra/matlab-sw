@@ -2,14 +2,14 @@
 Exporting geometries from MATLAB to SOLIDWORKS
 
 ## loft
-Exports a series of cross sectionds at z coordinates to a solidworks part constructed using lofts.
+Exports a series of cross sections at z coordinates to a solidworks part constructed using lofts.
 
 To use:
 
 1) open **loft.m** 
 2) Create an array of the z coordinates of your cross sections - line 12
 3) Import your cross sections. These must be as *polyshapes* - see the MATLAB documentation.
-  For this, you can use **import_aerofoil.m** to import aerfoils from airfoiltools.com 
+  For this, you can use **import_aerofoil.m** to import aerofoils from airfoiltools.com 
 4) For variable cross sections, you can define the cross section to use by modifying the choose_xc function
 5) Define your centre of transformation
 6) Transformations of the cross section (enlargements and rotations) occur on line 57 - modify the parameters to those desired.
