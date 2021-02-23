@@ -9,13 +9,13 @@ switch unit_system
 end
 
 % array of z coordinates
-z = 0:0.005:0.5;
+z = 0:0.02:0.5;
 
 % all cross sections must be polyshapes
 % using aerofoils here to demonstrate
 cross_sections = {};
-cross_sections{1} = import_aerofoil('examples/e216.dat', true);
-cross_sections{2} = import_aerofoil('examples/lwk80100.dat', true);
+cross_sections{1} = import_aerofoil('examples/e216.dat');
+cross_sections{2} = import_aerofoil('examples/lwk80100.dat');
 
 % centre of transformation for aerofoils is at quarter chord
 centre = [0.25 0];
@@ -25,13 +25,12 @@ theta = 0;
 
 % begin export
 
-
 figure
 hold on
 
 progress = waitbar(0, 'Plotting');
 
-macro = fopen('examples/macro.swp', 'w');
+macro = fopen('examples/macro.txt', 'w');
 
 fprintf(macro, 'Dim swApp As Object\nDim longstatus As Long, longwarnings As Long\n');
 fprintf(macro, 'Sub main()\n');
@@ -60,12 +59,12 @@ for i = 1:1:length(z)
     [x, y] = boundary(transformed);
     z_out = z(i)*ones(length(x), 1);
     
-    plot3(x, y, z_out, 'k.');
+    plot3(x, y, z_out, '.');
     
     fname = sprintf("examples/sections/section_%.d.sldcrv", i);
     crv = fopen(fname, 'w');
     
-    for j = 1:1:length(x) %Writes for the tip airfoil
+    for j = 1:1:length(x) 
         X = x(j)*unit_conversion;
         Y = y(j)*unit_conversion;
         Z = z_out(j)*unit_conversion;
@@ -82,11 +81,11 @@ for i = 1:1:length(z)
     
     % random change to chord and twist to demonstrate transformation
     % replace or remove if necessary 
-    chord = chord - 0.01*rand(1);
-    theta = theta + randi(2);
+    chord = chord - 0.03;
+    theta = theta + 2;
 end
 
-for i = length(x):-1:2
+for i = length(z):-1:2
     
     fprintf(macro, '%s%d%s\n', selectcostart, (i-1), selectcoend);
     fprintf(macro, '%s%d%s\n', selectcostart, i, selectcoend);
@@ -95,11 +94,10 @@ for i = length(x):-1:2
     
 end
 
-
 fprintf(macro, 'Set swApp = Application.SldWorks\nEnd Sub');
 fclose(macro);
 
-%winopen macro_v5.txt
+winopen examples/macro.txt
 
 close(progress);
 title('Visualistion');
@@ -111,14 +109,12 @@ grid ON;
 view(3)
 axis equal
 
-close(progress)
-
 function index = choose_xc(z)
 % allows different cross sections to be chosen along the length of the part
 
     if z < 0.3
         index = 1;
     else
-        index = 2;
+        index = 1;
     end
 end
