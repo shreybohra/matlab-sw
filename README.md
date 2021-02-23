@@ -20,4 +20,7 @@ To use:
 11) Replace the code in the new macro with the code in the macro.txt file
 12) Save and run the macro
 
+**Note:** you cannot directly export a macro from MATLAB to SOLIDWORKS. You must create a new macro in SOLIDWORKS and copy and paste the code created by this program.
+
+### Known Bugs
 Some sections may not create a loft in between due to an unknown error, these can be created manually after the rest of the part has been created. The guide curves will still be present.
